@@ -1,5 +1,6 @@
 const ShortURL = require('./../models/Url.model')
 const validate = require('url-validator')
+const shortid = require('shortid')
 const db = require('./../database/db')
 
 exports.redirectURL = async (req, res) => {
@@ -13,7 +14,7 @@ exports.redirectURL = async (req, res) => {
 
     clicks++
 
-    await url.update({ clicks })
+    await url.updateOne({ clicks })
 
     return res.redirect(url.full)
   }
@@ -50,8 +51,8 @@ exports.shortURL = async (req, res)=> {
     let {full} = req.body
 
     if (!validate(full)) throw new Error('Invalid URL')
-  
-    const newUrl = await ShortURL.create({full: full})
+    let short = shortid.generate()
+    const newUrl = await ShortURL.create({full, short})
     
     return res.status(200).json({
       status: 'success',

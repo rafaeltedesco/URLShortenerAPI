@@ -1,5 +1,5 @@
 const {Schema, model} = require('mongoose')
-const shortid = require('shortid')
+
 const ShortURLSchema = new Schema({
   full: {
     type: String,
@@ -9,7 +9,7 @@ const ShortURLSchema = new Schema({
   short: {
     type: String,
     required: true,
-    default: shortid.generate()
+    unique: true
   },
   clicks: {
     type: Number,
@@ -17,5 +17,6 @@ const ShortURLSchema = new Schema({
     default: 0
   }
 })
+
 
 module.exports = model('ShortURL', ShortURLSchema)
